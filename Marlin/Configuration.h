@@ -657,7 +657,10 @@
 // A probe that is deployed and stowed with a solenoid pin (SOL1_PIN)
 //#define SOLENOID_PROBE
 
+// A probe that is deployed by printer movements (not an actual allen key though)
 #define Z_PROBE_ALLEN_KEY
+// The probe is not triggered when stoved.
+#define NO_PROBE_IS_TRIGGERED_WHEN_STOWED_TEST
 
 #if ENABLED(Z_PROBE_ALLEN_KEY)
   // 2 or 3 sets of coordinates for deploying and retracting the spring loaded touch probe on G29,
@@ -675,12 +678,12 @@
 
   #define Z_PROBE_ALLEN_KEY_DEPLOY_3_X Z_PROBE_ALLEN_KEY_DEPLOY_2_X
   //#define Z_PROBE_ALLEN_KEY_DEPLOY_3_Y 0
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_3_Z 51.0
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_3_Z 49.0
   #define Z_PROBE_ALLEN_KEY_DEPLOY_3_FEEDRATE XY_PROBE_SPEED
 
   #define Z_PROBE_ALLEN_KEY_DEPLOY_4_X Z_PROBE_ALLEN_KEY_DEPLOY_1_X
   //#define Z_PROBE_ALLEN_KEY_DEPLOY_4_Y 0
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_4_Z 51.0
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_4_Z 49.0
   #define Z_PROBE_ALLEN_KEY_DEPLOY_4_FEEDRATE XY_PROBE_SPEED
 
   #define Z_PROBE_ALLEN_KEY_STOW_1_X Z_PROBE_ALLEN_KEY_DEPLOY_4_X
