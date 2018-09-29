@@ -1,4 +1,6 @@
-# Marlin 3D Printer Firmware
+# Marlin 3D Printer Firmware - modified for ADIMLabs_gantry to support a microswitch based z probe
+
+
 <img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
 
 ## Marlin 1.1
