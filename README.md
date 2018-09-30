@@ -2,6 +2,8 @@
 
 The config file was based on Peter Oakes config: https://github.com/thebreadboard/MARLIN
 
+# Original Marlin readme:
+
 ## Marlin 1.1
 
 Marlin 1.1 represents an evolutionary leap over Marlin 1.0.2. It is the result of over two years of effort by several volunteers around the world who have paid meticulous and sometimes obsessive attention to every detail. For this release we focused on code quality, performance, stability, and overall user experience. Several new features have also been added, many of which require no extra hardware.
