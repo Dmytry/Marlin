@@ -773,15 +773,15 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE   20 // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  10 // Z Clearance between probe points
+#define Z_CLEARANCE_DEPLOY_PROBE   8 // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_BETWEEN_PROBES  8 // Z Clearance between probe points
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -20
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
-//#define Z_MIN_PROBE_REPEATABILITY_TEST
+#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
 // :{ 0:'Low', 1:'High' }
@@ -974,8 +974,8 @@
   // Set the boundaries for probing (where the probe can reach).
   #define LEFT_PROBE_BED_POSITION 50
   #define RIGHT_PROBE_BED_POSITION 276
-  #define FRONT_PROBE_BED_POSITION 50
-  #define BACK_PROBE_BED_POSITION 300
+  #define FRONT_PROBE_BED_POSITION 30
+  #define BACK_PROBE_BED_POSITION 280
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
