@@ -1,7 +1,12 @@
 # Marlin 3D Printer Firmware - modified for ADIMLabs_gantry to support a microswitch based z probe
 
+The config file was based on Peter Oakes config: https://github.com/thebreadboard/MARLIN
 
-<img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
+You can [see the probe in action here](https://youtu.be/guoYLGDIiuw).
+
+You can get the probe's [openscad design here](https://github.com/Dmytry/ZProbe/)
+
+# Original Marlin readme:
 
 ## Marlin 1.1
 
