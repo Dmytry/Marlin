@@ -749,7 +749,7 @@
 #define XY_PROBE_SPEED 24000
 
 // Speed for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z*4
+#define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
 
 // Speed for the "accurate" probe of each point
 #define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2)
@@ -847,7 +847,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 415
+#define Z_MAX_POS 400
 
 /**
  * Software Endstops
@@ -1098,7 +1098,7 @@
 
 // Homing speeds (mm/m)
 #define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (4*60)
+#define HOMING_FEEDRATE_Z  (16*60)
 
 // @section calibrate
 
