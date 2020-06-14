@@ -663,15 +663,17 @@
 #define NO_PROBE_IS_TRIGGERED_WHEN_STOWED_TEST
 
 #if ENABLED(Z_PROBE_ALLEN_KEY)
+
+  #define PROBE_ENGAGE_X_OFFSET X_MIN_POS
   // 2 or 3 sets of coordinates for deploying and retracting the spring loaded touch probe on G29,
   // if servo actuated touch probe is not defined. Uncomment as appropriate for your printer/probe.
 
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_1_X 315.0
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_1_X (315.0 + PROBE_ENGAGE_X_OFFSET)
   //#define Z_PROBE_ALLEN_KEY_DEPLOY_1_Y 0
   #define Z_PROBE_ALLEN_KEY_DEPLOY_1_Z 12.0
   #define Z_PROBE_ALLEN_KEY_DEPLOY_1_FEEDRATE XY_PROBE_SPEED
 
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_2_X 323.0
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_2_X (323.0 + PROBE_ENGAGE_X_OFFSET)
   //#define Z_PROBE_ALLEN_KEY_DEPLOY_2_Y 0
   #define Z_PROBE_ALLEN_KEY_DEPLOY_2_Z 12.0
   #define Z_PROBE_ALLEN_KEY_DEPLOY_2_FEEDRATE XY_PROBE_SPEED
@@ -838,12 +840,12 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 325
-#define Y_BED_SIZE 325
+#define X_BED_SIZE 308 // 308
+#define Y_BED_SIZE 285 // clips get in the way
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
+#define X_MIN_POS -10
+#define Y_MIN_POS -15
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
@@ -973,9 +975,9 @@
 
   // Set the boundaries for probing (where the probe can reach).
   #define LEFT_PROBE_BED_POSITION 50
-  #define RIGHT_PROBE_BED_POSITION 276
-  #define FRONT_PROBE_BED_POSITION 30
-  #define BACK_PROBE_BED_POSITION 280
+  #define RIGHT_PROBE_BED_POSITION 290
+  #define FRONT_PROBE_BED_POSITION 20
+  #define BACK_PROBE_BED_POSITION 265
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
