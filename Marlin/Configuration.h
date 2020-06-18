@@ -912,19 +912,11 @@
 // A sled-mounted probe like those designed by Charles Bell.
 //#define Z_PROBE_SLED
 //#define SLED_DOCKING_OFFSET 5  // The extra distance the X axis must travel to pickup the sled. 0 should be fine but you can push it further if you'd like.
-#define Z_PROBE_ALLEN_KEY
+//#define Z_PROBE_ALLEN_KEY
+
 // The probe is not triggered when stoved.
 #define NO_PROBE_IS_TRIGGERED_WHEN_STOWED_TEST
 
-#if ENABLED(Z_PROBE_ALLEN_KEY)
-// A probe deployed by moving the x-axis, such as the Wilson II's rack-and-pinion probe designed by Marty Rice.
-//#define RACK_AND_PINION_PROBE
-#if ENABLED(RACK_AND_PINION_PROBE)
-  #define Z_PROBE_DEPLOY_X  X_MIN_POS
-  #define Z_PROBE_RETRACT_X X_MAX_POS
-#endif
-
-  #define PROBE_ENGAGE_X_OFFSET X_MIN_POS
 // Duet Smart Effector (for delta printers) - https://bit.ly/2ul5U7J
 // When the pin is defined you can use M672 to set/reset the probe sensivity.
 //#define DUET_SMART_EFFECTOR
@@ -932,7 +924,13 @@
   #define SMART_EFFECTOR_MOD_PIN  -1  // Connect a GPIO pin to the Smart Effector MOD pin
 #endif
 
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_1_X (315.0 + PROBE_ENGAGE_X_OFFSET)
+// A probe deployed by moving the x-axis, such as the Wilson II's rack-and-pinion probe designed by Marty Rice.
+//#define RACK_AND_PINION_PROBE
+#if ENABLED(RACK_AND_PINION_PROBE)
+  #define Z_PROBE_DEPLOY_X  X_MIN_POS
+  #define Z_PROBE_RETRACT_X X_MAX_POS
+#endif
+
 /**
  * Use StallGuard2 to probe the bed with the nozzle.
  * Requires stallGuard-capable Trinamic stepper drivers.
@@ -940,33 +938,53 @@
  *          Take extreme care when setting up this feature.
  */
 //#define SENSORLESS_PROBING
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_1_Z (12.0+Z_MIN_POS)
+
+#if ENABLED(Z_PROBE_ALLEN_KEY)
+
+  #define PROBE_ENGAGE_X_OFFSET X_MIN_POS
+
+  #define PROBE_ENGAGE_Y current_position.y
+
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_1 { (315.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (12.0+Z_MIN_POS)}
   #define Z_PROBE_ALLEN_KEY_DEPLOY_1_FEEDRATE XY_PROBE_SPEED
 
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_2_X (323.0 + PROBE_ENGAGE_X_OFFSET)
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_2_Z (12.0+Z_MIN_POS)
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_2 {(323.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (12.0+Z_MIN_POS)}
   #define Z_PROBE_ALLEN_KEY_DEPLOY_2_FEEDRATE XY_PROBE_SPEED
 
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_3_X Z_PROBE_ALLEN_KEY_DEPLOY_2_X
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_3_Z (49.0+Z_MIN_POS)
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_3 {(323.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (49.0+Z_MIN_POS)}
   #define Z_PROBE_ALLEN_KEY_DEPLOY_3_FEEDRATE XY_PROBE_SPEED
 
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_4_X Z_PROBE_ALLEN_KEY_DEPLOY_1_X
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_4_Z (49.0+Z_MIN_POS)
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_4 { (315.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (49.0+Z_MIN_POS)}
   #define Z_PROBE_ALLEN_KEY_DEPLOY_4_FEEDRATE (XY_PROBE_SPEED/10)
-  #define Z_PROBE_ALLEN_KEY_STOW_1_X Z_PROBE_ALLEN_KEY_DEPLOY_4_X
-  #define Z_PROBE_ALLEN_KEY_STOW_1_Z Z_PROBE_ALLEN_KEY_DEPLOY_4_Z
+
+  #define Z_PROBE_ALLEN_KEY_STOW_1 Z_PROBE_ALLEN_KEY_DEPLOY_4
   #define Z_PROBE_ALLEN_KEY_STOW_1_FEEDRATE XY_PROBE_SPEED
-  #define Z_PROBE_ALLEN_KEY_STOW_2_X Z_PROBE_ALLEN_KEY_DEPLOY_3_X
-  #define Z_PROBE_ALLEN_KEY_STOW_2_Z Z_PROBE_ALLEN_KEY_DEPLOY_3_Z
+
+  #define Z_PROBE_ALLEN_KEY_STOW_2 Z_PROBE_ALLEN_KEY_DEPLOY_3
   #define Z_PROBE_ALLEN_KEY_STOW_2_FEEDRATE XY_PROBE_SPEED
-  #define Z_PROBE_ALLEN_KEY_STOW_3_X Z_PROBE_ALLEN_KEY_DEPLOY_2_X
-  #define Z_PROBE_ALLEN_KEY_STOW_3_Z (14+Z_MIN_POS)
+
+  #define Z_PROBE_ALLEN_KEY_STOW_3  {(323.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (14.0+Z_MIN_POS)}
   #define Z_PROBE_ALLEN_KEY_STOW_3_FEEDRATE XY_PROBE_SPEED
-  #define Z_PROBE_ALLEN_KEY_STOW_4_X Z_PROBE_ALLEN_KEY_DEPLOY_1_X
-  #define Z_PROBE_ALLEN_KEY_STOW_4_Z (14+Z_MIN_POS)
+
+  #define Z_PROBE_ALLEN_KEY_STOW_4 {(315.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (14.0+Z_MIN_POS)}
   #define Z_PROBE_ALLEN_KEY_STOW_4_FEEDRATE (XY_PROBE_SPEED/10)
+
 #endif // Z_PROBE_ALLEN_KEY
+
+#define Z_PROBE_SIDE_RACK
+#if ENABLED(Z_PROBE_SIDE_RACK)
+#define Z_PROBE_SIDE_RACK_DISENGAGE_X 315+X_MIN_POS
+#define Z_PROBE_SIDE_RACK_ENGAGE_X 323+X_MIN_POS
+#define Z_PROBE_SIDE_RACK_STOWED_Z 14.0+Z_MIN_POS
+#define Z_PROBE_SIDE_RACK_DEPLOYED_Z 49.0+Z_MIN_POS
+
+#define Z_PROBE_SIDE_RACK_MOVE_FEEDRATE XY_PROBE_SPEED/10
+#define Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE XY_PROBE_SPEED/10
+#define Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE XY_PROBE_SPEED/10
+#define Z_PROBE_SIDE_RACK_STOW_FEEDRATE XY_PROBE_SPEED/10
+#define Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE XY_PROBE_SPEED/10
+#endif
+
 #define Z_PROBE_LOW_POINT -1
 //
 // For Z_PROBE_ALLEN_KEY see the Delta example configurations.
@@ -992,10 +1010,11 @@
  *
  * Specify a Probe position as { X, Y, Z }
  */
-#define X_PROBE_OFFSET_FROM_EXTRUDER 42  // X offset: -left  +right  [of the nozzle]
-#define Y_PROBE_OFFSET_FROM_EXTRUDER -14  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -4.3   // Z offset: -below +above  [the nozzle]
-#define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 }
+//#define X_PROBE_OFFSET_FROM_EXTRUDER 42  // X offset: -left  +right  [of the nozzle]
+//#define Y_PROBE_OFFSET_FROM_EXTRUDER -14  // Y offset: -front +behind [the nozzle]
+//#define Z_PROBE_OFFSET_FROM_EXTRUDER -4.38   // Z offset: -below +above  [the nozzle]
+
+#define NOZZLE_TO_PROBE_OFFSET { 42, -14, -4.38 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1038,8 +1057,7 @@
  */
 #define Z_CLEARANCE_DEPLOY_PROBE   8 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
-#define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
+#define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
 
@@ -1259,7 +1277,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-//#define DEBUG_LEVELING_FEATURE
+#define DEBUG_LEVELING_FEATURE
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL)
   // Gradually reduce leveling correction until a set height is reached,
@@ -1295,10 +1313,11 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define LEFT_PROBE_BED_POSITION 50
-  #define RIGHT_PROBE_BED_POSITION 290
-  #define FRONT_PROBE_BED_POSITION 20
-  #define BACK_PROBE_BED_POSITION 265
+  #define MIN_PROBE_EDGE_LEFT 50
+  #define MIN_PROBE_EDGE_RIGHT 290
+  #define MIN_PROBE_EDGE_FRONT 20
+  #define MIN_PROBE_EDGE_BACK 265
+
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
   // Probe along the Y axis, advancing X after each column
@@ -1489,12 +1508,12 @@
  *   M501 - Read settings from EEPROM. (i.e., Throw away unsaved changes)
  *   M502 - Revert settings to "factory" defaults. (Follow with M500 to init the EEPROM.)
  */
-//#define EEPROM_SETTINGS     // Persistent storage with M500 and M501
+#define EEPROM_SETTINGS     // Persistent storage with M500 and M501
 //#define DISABLE_M503        // Saves ~2700 bytes of PROGMEM. Disable for release!
 #define EEPROM_CHITCHAT       // Give feedback on EEPROM commands. Disable to save PROGMEM.
 #define EEPROM_BOOT_SILENT    // Keep M503 quiet and only give errors during first load
 #if ENABLED(EEPROM_SETTINGS)
-  //#define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.
+  #define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.
 #endif
 #define EEPROM_SETTINGS // Enable for M500 and M501 commands
 #define EEPROM_CHITCHAT   // Give feedback on EEPROM commands. Disable to save PROGMEM.
