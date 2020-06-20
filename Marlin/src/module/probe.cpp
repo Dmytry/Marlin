@@ -237,18 +237,21 @@ xyz_pos_t Probe::offset; // Initialized by settings.load()
   }
 
 #elif ENABLED(Z_PROBE_SIDE_RACK)
-inline void run_deploy_moves_script() {
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOWED_Z, Z_PROBE_SIDE_RACK_MOVE_FEEDRATE);
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOWED_Z, Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE);
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_DEPLOYED_Z, Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE);
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_DEPLOYED_Z, Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE);
-}
-inline void run_stow_moves_script() {
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_DEPLOYED_Z, Z_PROBE_SIDE_RACK_MOVE_FEEDRATE);
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_DEPLOYED_Z, Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE);
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOWED_Z, Z_PROBE_SIDE_RACK_STOW_FEEDRATE);
-  do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOWED_Z, Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE);  
-}
+
+  inline void run_deploy_moves_script() {
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
+  }
+
+  inline void run_stow_moves_script() {
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_STOW_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));  
+  }
+
 #endif // Z_PROBE_SIDE_RACK
 
 // Z_PROBE_ALLEN_KEY

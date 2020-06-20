@@ -73,6 +73,10 @@ public:
        *          nozzle must be be able to reach +10,-10.
        */
       static inline bool can_reach(const float &rx, const float &ry) {
+        if (DEBUGGING(LEVELING)){
+          SERIAL_ECHOLNPAIR("can_reach x", rx, ", ", ry);
+          SERIAL_ECHOLNPAIR("can_reach min to max range ", min_x(), " - ", max_x(), ", ", min_y(), " - ", max_y());
+        }
         return position_is_reachable(rx - offset_xy.x, ry - offset_xy.y)
             && WITHIN(rx, min_x() - fslop, max_x() + fslop)
             && WITHIN(ry, min_y() - fslop, max_y() + fslop);

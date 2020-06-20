@@ -43,7 +43,10 @@ void GcodeSuite::G30() {
   const xy_pos_t pos = { parser.linearval('X', current_position.x + probe.offset_xy.x),
                          parser.linearval('Y', current_position.y + probe.offset_xy.y) };
 
-  if (!probe.can_reach(pos)) return;
+  if (!probe.can_reach(pos)){
+    SERIAL_ECHOLNPAIR("Supposedly can not reach point ", FIXFLOAT(pos.x), " Y: ", FIXFLOAT(pos.y));
+    //return;
+  }
 
   // Disable leveling so the planner won't mess with us
   #if HAS_LEVELING

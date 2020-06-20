@@ -971,18 +971,27 @@
 
 #endif // Z_PROBE_ALLEN_KEY
 
+// A probe deployed by moving X and Z axes.
 #define Z_PROBE_SIDE_RACK
 #if ENABLED(Z_PROBE_SIDE_RACK)
-#define Z_PROBE_SIDE_RACK_DISENGAGE_X 315+X_MIN_POS
-#define Z_PROBE_SIDE_RACK_ENGAGE_X 323+X_MIN_POS
-#define Z_PROBE_SIDE_RACK_STOWED_Z 14.0+Z_MIN_POS
-#define Z_PROBE_SIDE_RACK_DEPLOYED_Z 49.0+Z_MIN_POS
-
-#define Z_PROBE_SIDE_RACK_MOVE_FEEDRATE XY_PROBE_SPEED/10
-#define Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE XY_PROBE_SPEED/10
-#define Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE XY_PROBE_SPEED/10
-#define Z_PROBE_SIDE_RACK_STOW_FEEDRATE XY_PROBE_SPEED/10
-#define Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE XY_PROBE_SPEED/10
+  // X position at which the side rack is not engaged
+  #define Z_PROBE_SIDE_RACK_DISENGAGE_X 315+X_MIN_POS
+  // X position at which the side rack is engaged
+  #define Z_PROBE_SIDE_RACK_ENGAGE_X 323+X_MIN_POS
+  // Z positions for the deploying movement
+  #define Z_PROBE_SIDE_RACK_DEPLOY_Z_START 12.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_RACK_DEPLOY_Z_END 52.0+Z_MIN_POS
+  // Z positions for the stowing movement
+  #define Z_PROBE_SIDE_RACK_STOW_Z_START 51.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_RACK_STOW_Z_END 14.0+Z_MIN_POS
+  // Feedrates for the movements
+  #define Z_PROBE_SIDE_RACK_MOVE_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE XY_PROBE_SPEED/10
+  #define Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE XY_PROBE_SPEED/10
+  #define Z_PROBE_SIDE_RACK_STOW_FEEDRATE XY_PROBE_SPEED/10
+  // Speed of disengaging from the rack
+  // May have to be slower to avoid shaking the probe open
+  #define Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE XY_PROBE_SPEED/10
 #endif
 
 #define Z_PROBE_LOW_POINT -1
@@ -1014,7 +1023,7 @@
 //#define Y_PROBE_OFFSET_FROM_EXTRUDER -14  // Y offset: -front +behind [the nozzle]
 //#define Z_PROBE_OFFSET_FROM_EXTRUDER -4.38   // Z offset: -below +above  [the nozzle]
 
-#define NOZZLE_TO_PROBE_OFFSET { 42, -14, -4.38 }
+#define NOZZLE_TO_PROBE_OFFSET { 42, -14, -3.68 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1150,12 +1159,12 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 308 // 308
-#define Y_BED_SIZE 285 // clips get in the way
+#define X_BED_SIZE 308 // avoid the rack
+#define Y_BED_SIZE 308 // does not avoid the clips
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS -10
-#define Y_MIN_POS -15
+#define Y_MIN_POS -5
 #define Z_MIN_POS -1.8
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
@@ -1314,9 +1323,9 @@
 
   // Set the boundaries for probing (where the probe can reach).
   #define MIN_PROBE_EDGE_LEFT 50
-  #define MIN_PROBE_EDGE_RIGHT 290
+  #define MIN_PROBE_EDGE_RIGHT 10
   #define MIN_PROBE_EDGE_FRONT 20
-  #define MIN_PROBE_EDGE_BACK 265
+  #define MIN_PROBE_EDGE_BACK 30
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
