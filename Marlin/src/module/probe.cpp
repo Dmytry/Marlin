@@ -246,10 +246,32 @@ xyz_pos_t Probe::offset; // Initialized by settings.load()
   }
 
   inline void run_stow_moves_script() {
+    endstops.enable_z_probe(false);
     do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_STOW_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));  
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
+  }
+
+#elif ENABLED(Z_PROBE_SIDE_PUSHER)
+
+  inline void run_deploy_moves_script() {
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, current_position.z, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    // Go down fast
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+  }
+
+  inline void run_stow_moves_script() {
+    endstops.enable_z_probe(false);
+
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, current_position.y, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, current_position.y, Z_PROBE_SIDE_PUSHER_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, current_position.y, Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
   }
 
 #endif // Z_PROBE_SIDE_RACK
@@ -352,7 +374,7 @@ FORCE_INLINE void probe_specific_action(const bool deploy) {
       if (deploy) bltouch.deploy(); else bltouch.stow();
     #endif
 
-  #elif ANY(TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, Z_PROBE_SIDE_RACK)
+  #elif ANY(TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, Z_PROBE_SIDE_RACK, Z_PROBE_SIDE_PUSHER)
 
     deploy ? run_deploy_moves_script() : run_stow_moves_script();
 
@@ -400,7 +422,7 @@ bool Probe::set_deployed(const bool deploy) {
   if (deploy_stow_condition && unknown_condition)
     do_z_raise(_MAX(Z_CLEARANCE_BETWEEN_PROBES, Z_CLEARANCE_DEPLOY_PROBE));
 
-  #if ANY(Z_PROBE_SLED, Z_PROBE_ALLEN_KEY, Z_PROBE_SIDE_RACK)
+  #if ANY(Z_PROBE_SLED, Z_PROBE_ALLEN_KEY, Z_PROBE_SIDE_RACK, Z_PROBE_SIDE_PUSHER)
     if (axis_unhomed_error(
       #if ENABLED(Z_PROBE_SLED)
         _BV(X_AXIS)

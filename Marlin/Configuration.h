@@ -972,7 +972,8 @@
 #endif // Z_PROBE_ALLEN_KEY
 
 // A probe deployed by moving X and Z axes.
-#define Z_PROBE_SIDE_RACK
+//#define Z_PROBE_SIDE_RACK
+
 #if ENABLED(Z_PROBE_SIDE_RACK)
   // X position at which the side rack is not engaged
   #define Z_PROBE_SIDE_RACK_DISENGAGE_X 315+X_MIN_POS
@@ -992,9 +993,37 @@
   // Speed of disengaging from the rack
   // May have to be slower to avoid shaking the probe open
   #define Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE XY_PROBE_SPEED/10
+
 #endif
 
-#define Z_PROBE_LOW_POINT -1
+#define Z_PROBE_SIDE_PUSHER
+#if ENABLED(Z_PROBE_SIDE_PUSHER)
+  // X position at which the side rack is not engaged
+  #define Z_PROBE_SIDE_PUSHER_SAFE_X 10.0+X_MIN_POS
+
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 0.0+X_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_STOW_X 0.0+X_MIN_POS
+
+  // Z positions for the deploying movement
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 385.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END Z_MAX_POS// 400.0+Z_MIN_POS
+  // Z positions for the stowing movement
+  #define Z_PROBE_SIDE_PUSHER_STOW_Z_START 10.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_STOW_Z_END Z_MIN_POS
+
+  #define Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL 8
+
+  // Feedrates for the movements
+  #define Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE XY_PROBE_SPEED
+
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE XY_PROBE_SPEED/10
+  #define Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE XY_PROBE_SPEED/10
+  // Speed of disengaging from the rack
+  // May have to be slower to avoid shaking the probe open
+
+#endif
+
+#define Z_PROBE_LOW_POINT -2
 //
 // For Z_PROBE_ALLEN_KEY see the Delta example configurations.
 //
@@ -1023,7 +1052,7 @@
 //#define Y_PROBE_OFFSET_FROM_EXTRUDER -14  // Y offset: -front +behind [the nozzle]
 //#define Z_PROBE_OFFSET_FROM_EXTRUDER -4.38   // Z offset: -below +above  [the nozzle]
 
-#define NOZZLE_TO_PROBE_OFFSET { 42, -14, -3.68 }
+#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -0.95 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
