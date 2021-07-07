@@ -585,7 +585,9 @@
  */
 
 #define THERMAL_PROTECTION_HOTENDS // Enable thermal protection for all extruders
-#define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed
+
+// The bed is too low powered to heat up dangerously
+//#define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed
 
 //===========================================================================
 //============================= Mechanical Settings =========================
@@ -1005,10 +1007,10 @@
   #define Z_PROBE_SIDE_PUSHER_STOW_X 0.0+X_MIN_POS
 
   // Z positions for the deploying movement
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 385.0+Z_MIN_POS
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END Z_MAX_POS// 400.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 380.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 397.0+Z_MIN_POS
   // Z positions for the stowing movement
-  #define Z_PROBE_SIDE_PUSHER_STOW_Z_START 10.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_STOW_Z_START 8
   #define Z_PROBE_SIDE_PUSHER_STOW_Z_END Z_MIN_POS
 
   #define Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL 8
@@ -1023,7 +1025,7 @@
 
 #endif
 
-#define Z_PROBE_LOW_POINT -2
+#define Z_PROBE_LOW_POINT -6
 //
 // For Z_PROBE_ALLEN_KEY see the Delta example configurations.
 //
@@ -1174,7 +1176,7 @@
 
 //#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 
-//#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT  15      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
 //#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
@@ -1193,11 +1195,11 @@
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS -10
-#define Y_MIN_POS -5
-#define Z_MIN_POS -1.8
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 400
+#define Y_MIN_POS -17
+#define Z_MIN_POS -14.3
+#define X_MAX_POS X_BED_SIZE+1
+#define Y_MAX_POS Y_BED_SIZE+1
+#define Z_MAX_POS 383
 
 /**
  * Software Endstops
@@ -1236,11 +1238,13 @@
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
-//#define FILAMENT_RUNOUT_SENSOR
+#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-  #define FIL_RUNOUT_INVERTING false // Set to true to invert the logic of the sensor.
+  #define FIL_RUNOUT_INVERTING true // Set to true to invert the logic of the sensor.
   #define FIL_RUNOUT_PULLUP          // Use internal pullup for filament runout pins.
+  #define FIL_RUNOUT_PIN 28 // y max pin
+
   //#define FIL_RUNOUT_PULLDOWN      // Use internal pulldown for filament runout pins.
 
   // Set one or more commands to execute on filament runout.
@@ -1600,11 +1604,11 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MIN_POS + 1), (Y_MIN_POS +1), 20 }
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE 5      // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
