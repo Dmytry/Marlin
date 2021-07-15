@@ -1110,28 +1110,28 @@
   #define PROBE_ENGAGE_Y current_position.y
 
   #define Z_PROBE_ALLEN_KEY_DEPLOY_1 { (315.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (12.0+Z_MIN_POS)}
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_1_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_1_FEEDRATE XY_PROBE_FEEDRATE
 
   #define Z_PROBE_ALLEN_KEY_DEPLOY_2 {(323.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (12.0+Z_MIN_POS)}
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_2_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_2_FEEDRATE XY_PROBE_FEEDRATE
 
   #define Z_PROBE_ALLEN_KEY_DEPLOY_3 {(323.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (49.0+Z_MIN_POS)}
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_3_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_3_FEEDRATE XY_PROBE_FEEDRATE
 
   #define Z_PROBE_ALLEN_KEY_DEPLOY_4 { (315.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (49.0+Z_MIN_POS)}
-  #define Z_PROBE_ALLEN_KEY_DEPLOY_4_FEEDRATE (XY_PROBE_SPEED/10)
+  #define Z_PROBE_ALLEN_KEY_DEPLOY_4_FEEDRATE (XY_PROBE_FEEDRATE/10)
 
   #define Z_PROBE_ALLEN_KEY_STOW_1 Z_PROBE_ALLEN_KEY_DEPLOY_4
-  #define Z_PROBE_ALLEN_KEY_STOW_1_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_ALLEN_KEY_STOW_1_FEEDRATE XY_PROBE_FEEDRATE
 
   #define Z_PROBE_ALLEN_KEY_STOW_2 Z_PROBE_ALLEN_KEY_DEPLOY_3
-  #define Z_PROBE_ALLEN_KEY_STOW_2_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_ALLEN_KEY_STOW_2_FEEDRATE XY_PROBE_FEEDRATE
 
   #define Z_PROBE_ALLEN_KEY_STOW_3  {(323.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (14.0+Z_MIN_POS)}
-  #define Z_PROBE_ALLEN_KEY_STOW_3_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_ALLEN_KEY_STOW_3_FEEDRATE XY_PROBE_FEEDRATE
 
   #define Z_PROBE_ALLEN_KEY_STOW_4 {(315.0 + PROBE_ENGAGE_X_OFFSET), PROBE_ENGAGE_Y, (14.0+Z_MIN_POS)}
-  #define Z_PROBE_ALLEN_KEY_STOW_4_FEEDRATE (XY_PROBE_SPEED/10)
+  #define Z_PROBE_ALLEN_KEY_STOW_4_FEEDRATE (XY_PROBE_FEEDRATE/10)
 
 #endif // Z_PROBE_ALLEN_KEY
 
@@ -1150,13 +1150,13 @@
   #define Z_PROBE_SIDE_RACK_STOW_Z_START 51.0+Z_MIN_POS
   #define Z_PROBE_SIDE_RACK_STOW_Z_END 14.0+Z_MIN_POS
   // Feedrates for the movements
-  #define Z_PROBE_SIDE_RACK_MOVE_FEEDRATE XY_PROBE_SPEED
-  #define Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE XY_PROBE_SPEED/10
-  #define Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE XY_PROBE_SPEED/10
-  #define Z_PROBE_SIDE_RACK_STOW_FEEDRATE XY_PROBE_SPEED/10
+  #define Z_PROBE_SIDE_RACK_MOVE_FEEDRATE XY_PROBE_FEEDRATE
+  #define Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE XY_PROBE_FEEDRATE/10
+  #define Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE XY_PROBE_FEEDRATE/10
+  #define Z_PROBE_SIDE_RACK_STOW_FEEDRATE XY_PROBE_FEEDRATE/10
   // Speed of disengaging from the rack
   // May have to be slower to avoid shaking the probe open
-  #define Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE XY_PROBE_SPEED/10
+  #define Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE XY_PROBE_FEEDRATE/10
 
 #endif
 
@@ -1178,10 +1178,10 @@
   #define Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL 8
 
   // Feedrates for the movements
-  #define Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE XY_PROBE_SPEED
+  #define Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE XY_PROBE_FEEDRATE
 
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE XY_PROBE_SPEED/10
-  #define Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE XY_PROBE_SPEED/10
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE XY_PROBE_FEEDRATE/10
+  #define Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE XY_PROBE_FEEDRATE/10
   // Speed of disengaging from the rack
   // May have to be slower to avoid shaking the probe open
 
@@ -1224,11 +1224,10 @@
 
 // X and Y axis travel speed (mm/min) between probes
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 24000
-#define XY_PROBE_FEEDRATE (133*60)
+#define XY_PROBE_FEEDRATE 24000
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
+#define Z_PROBE_FEEDRATE_FAST (16*60)
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
@@ -1409,7 +1408,7 @@
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
   #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-  #define FIL_RUNOUT_INVERTING true // Set to true to invert the logic of the sensor.
+  //#define FIL_RUNOUT_INVERTING true // Set to true to invert the logic of the sensor.
   #define FIL_RUNOUT_PULLUP          // Use internal pullup for filament runout pins.
   #define FIL_RUNOUT_PIN 28 // y max pin
 
@@ -1417,7 +1416,7 @@
 
   // Set one or more commands to execute on filament runout.
   // (After 'M412 H' Marlin will ask the host to handle the process.)
-  #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
+  #define FIL_RUNOUT_STATE     HIGH        // Pin state indicating that filament is NOT present.
   #define FILAMENT_RUNOUT_SCRIPT "M600"
 
   // After a runout is detected, continue printing this length of filament
@@ -1528,13 +1527,13 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define MIN_PROBE_EDGE_LEFT 50
-  #define MIN_PROBE_EDGE_RIGHT 10
-  #define MIN_PROBE_EDGE_FRONT 20
-  #define MIN_PROBE_EDGE_BACK 30
+  #define PROBING_MARGIN_LEFT 50
+  #define PROBING_MARGIN_RIGHT 10
+  #define PROBING_MARGIN_FRONT 20
+  #define PROBING_MARGIN_BACK 30
 
   // The Z probe minimum outer margin (to validate G29 parameters).
-  #define MIN_PROBE_EDGE 10
+  #define PROBING_MARGIN 10
   // Probe along the Y axis, advancing X after each column
   //#define PROBE_Y_FIRST
 
@@ -1646,10 +1645,8 @@
   #define Z_SAFE_HOMING_Y_POINT ((Y_BED_SIZE) / 2)    // Y point for Z homing when homing all axes (G28).
 #endif
 
-// Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (16*60)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+// Homing feedrates (mm/min)
+#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (16*60) }
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
