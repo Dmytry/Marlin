@@ -146,7 +146,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Frankenstein3"
+#define CUSTOM_MACHINE_NAME "Frankenstein4"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -743,7 +743,8 @@
 #define THERMAL_PROTECTION_HOTENDS // Enable thermal protection for all extruders
 
 // The bed is too low powered to heat up dangerously
-#define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed
+// #define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed
+
 #define THERMAL_PROTECTION_CHAMBER // Enable thermal protection for the heated chamber
 #define THERMAL_PROTECTION_COOLER  // Enable thermal protection for the laser cooling
 
@@ -1246,7 +1247,7 @@
 //#define Y_PROBE_OFFSET_FROM_EXTRUDER -14  // Y offset: -front +behind [the nozzle]
 //#define Z_PROBE_OFFSET_FROM_EXTRUDER -4.38   // Z offset: -below +above  [the nozzle]
 
-#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -0.95 }
+#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -1.15 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
