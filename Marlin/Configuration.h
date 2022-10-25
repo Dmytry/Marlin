@@ -146,7 +146,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Frankenstein4"
+#define CUSTOM_MACHINE_NAME "Theseus"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -834,7 +834,7 @@
 
 // TODO rewire z probe so this can be set false
 // TODO: make sure pullup works
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false//true // set to true to invert the logic of the probe.
 
 /**
  * Stepper Drivers
@@ -918,7 +918,7 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 97.70 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 424.9 }// old extruder: 97.70 
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1109,8 +1109,11 @@
 //#define SLED_DOCKING_OFFSET 5  // The extra distance the X axis must travel to pickup the sled. 0 should be fine but you can push it further if you'd like.
 //#define Z_PROBE_ALLEN_KEY
 
-// The probe is not triggered when stoved.
-#define NO_PROBE_IS_TRIGGERED_WHEN_STOWED_TEST
+// The probe is triggered while stowed
+
+// #define NO_PROBE_IS_TRIGGERED_WHEN_STOWED_TEST
+
+
 
 // Duet Smart Effector (for delta printers) - https://bit.ly/2ul5U7J
 // When the pin is defined you can use M672 to set/reset the probe sensivity.
@@ -1192,6 +1195,7 @@
 #endif
 
 #define Z_PROBE_SIDE_PUSHER
+// TODO: fix for new magnetic probe deployment
 #if ENABLED(Z_PROBE_SIDE_PUSHER)
   // X position at which the side rack is not engaged
   #define Z_PROBE_SIDE_PUSHER_SAFE_X 10.0+X_MIN_POS
@@ -1200,8 +1204,8 @@
   #define Z_PROBE_SIDE_PUSHER_STOW_X 0.0+X_MIN_POS
 
   // Z positions for the deploying movement
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 380.0+Z_MIN_POS
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 397.0+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 5+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 5+Z_MIN_POS
   // Z positions for the stowing movement
   #define Z_PROBE_SIDE_PUSHER_STOW_Z_START 8
   #define Z_PROBE_SIDE_PUSHER_STOW_Z_END Z_MIN_POS
@@ -1218,7 +1222,7 @@
 
 #endif
 
-#define Z_PROBE_LOW_POINT -6
+#define Z_PROBE_LOW_POINT -3
 //
 // For Z_PROBE_ALLEN_KEY see the Delta example configurations.
 //
@@ -1247,11 +1251,13 @@
 //#define Y_PROBE_OFFSET_FROM_EXTRUDER -14  // Y offset: -front +behind [the nozzle]
 //#define Z_PROBE_OFFSET_FROM_EXTRUDER -4.38   // Z offset: -below +above  [the nozzle]
 
-#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -1.15 }
+// Old printhead
+//#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -1.15 }
+#define NOZZLE_TO_PROBE_OFFSET { 30.0, 3.0, -1.15 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10
+//#define PROBING_MARGIN 10
 
 // X and Y axis travel speed (mm/min) between probes
 // X and Y axis travel speed (mm/m) between probes
@@ -1290,8 +1296,12 @@
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
 #define Z_CLEARANCE_DEPLOY_PROBE   8 // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
+//#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
+//#define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
+
+#define Z_CLEARANCE_BETWEEN_PROBES  6 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     6 // Z Clearance between multiple probes
+
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
 
@@ -1304,9 +1314,10 @@
 //#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
-//#define PAUSE_BEFORE_DEPLOY_STOW
+
+#define PAUSE_BEFORE_DEPLOY_STOW
 #if ENABLED(PAUSE_BEFORE_DEPLOY_STOW)
-  //#define PAUSE_PROBE_DEPLOY_WHEN_TRIGGERED // For Manual Deploy Allenkey Probe
+  #define PAUSE_PROBE_DEPLOY_WHEN_TRIGGERED // For Manual Deploy Allenkey Probe
 #endif
 
 /**
@@ -1392,8 +1403,8 @@
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS -10
-#define Y_MIN_POS -17
-#define Z_MIN_POS -14.3
+#define Y_MIN_POS 0
+#define Z_MIN_POS 0//-14.3
 #define X_MAX_POS X_BED_SIZE+1
 #define Y_MAX_POS Y_BED_SIZE+1
 #define Z_MAX_POS 383
@@ -1436,7 +1447,7 @@
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
 
-#define FILAMENT_RUNOUT_SENSOR
+//  #define FILAMENT_RUNOUT_SENSOR
 
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
@@ -1564,12 +1575,12 @@
 
   // Set the boundaries for probing (where the probe can reach).
   #define PROBING_MARGIN_LEFT 50
-  #define PROBING_MARGIN_RIGHT 10
-  #define PROBING_MARGIN_FRONT 20
-  #define PROBING_MARGIN_BACK 30
+  #define PROBING_MARGIN_RIGHT 100
+  #define PROBING_MARGIN_FRONT 50
+  #define PROBING_MARGIN_BACK 50
 
   // The Z probe minimum outer margin (to validate G29 parameters).
-  #define PROBING_MARGIN 10
+  #define PROBING_MARGIN 50
   // Probe along the Y axis, advancing X after each column
   //#define PROBE_Y_FIRST
 
