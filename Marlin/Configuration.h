@@ -1254,7 +1254,7 @@
 
 // Old printhead
 //#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -1.15 }
-#define NOZZLE_TO_PROBE_OFFSET { 30.0, 3.0, -1.15 }
+#define NOZZLE_TO_PROBE_OFFSET { 30.0, 3.0, -0.71 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1315,8 +1315,7 @@
 //#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
-
-#define PAUSE_BEFORE_DEPLOY_STOW
+// #define PAUSE_BEFORE_DEPLOY_STOW
 #if ENABLED(PAUSE_BEFORE_DEPLOY_STOW)
   #define PAUSE_PROBE_DEPLOY_WHEN_TRIGGERED // For Manual Deploy Allenkey Probe
 #endif
