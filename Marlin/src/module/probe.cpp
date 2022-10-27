@@ -256,23 +256,18 @@ xyz_pos_t Probe::offset; // Initialized by settings.load()
   }
 
 #elif ENABLED(Z_PROBE_SIDE_PUSHER)
-
-  inline void run_deploy_moves_script() {
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, current_position.z, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+  inline void run_deploy_moves_script() {    
+    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
-    // Go down fast
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_MID, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));    
   }
 
   inline void run_stow_moves_script() {
     endstops.enable_z_probe(false);
-
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
-
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
   }
 

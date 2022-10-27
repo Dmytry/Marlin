@@ -1200,12 +1200,13 @@
   // X position at which the side rack is not engaged
   #define Z_PROBE_SIDE_PUSHER_SAFE_X 10.0+X_MIN_POS
 
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 0.0+X_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 336.0+X_MIN_POS
   #define Z_PROBE_SIDE_PUSHER_STOW_X 0.0+X_MIN_POS
 
   // Z positions for the deploying movement
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 5+Z_MIN_POS
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 5+Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 8
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_MID 0
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 8
   // Z positions for the stowing movement
   #define Z_PROBE_SIDE_PUSHER_STOW_Z_START 8
   #define Z_PROBE_SIDE_PUSHER_STOW_Z_END Z_MIN_POS
@@ -1574,10 +1575,10 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define PROBING_MARGIN_LEFT 50
-  #define PROBING_MARGIN_RIGHT 100
-  #define PROBING_MARGIN_FRONT 50
-  #define PROBING_MARGIN_BACK 50
+  #define PROBING_MARGIN_LEFT 10
+  #define PROBING_MARGIN_RIGHT 10
+  #define PROBING_MARGIN_FRONT 10
+  #define PROBING_MARGIN_BACK 10
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define PROBING_MARGIN 50
