@@ -1300,8 +1300,8 @@
 //#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
 //#define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
 
-#define Z_CLEARANCE_BETWEEN_PROBES  6 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     6 // Z Clearance between multiple probes
+#define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
 
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
@@ -1574,7 +1574,7 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define PROBING_MARGIN_LEFT 10
+  #define PROBING_MARGIN_LEFT 15
   #define PROBING_MARGIN_RIGHT 10
   #define PROBING_MARGIN_FRONT 10
   #define PROBING_MARGIN_BACK 10
@@ -1811,9 +1811,9 @@
 #define PREHEAT_1_TEMP_CHAMBER 35
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
-#define PREHEAT_2_LABEL       "ABS"
-#define PREHEAT_2_TEMP_HOTEND 240
-#define PREHEAT_2_TEMP_BED    110
+#define PREHEAT_2_LABEL       "PETG"
+#define PREHEAT_2_TEMP_HOTEND 220
+#define PREHEAT_2_TEMP_BED    70
 #define PREHEAT_2_TEMP_CHAMBER 35
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
