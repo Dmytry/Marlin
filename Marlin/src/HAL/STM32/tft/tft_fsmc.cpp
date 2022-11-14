@@ -19,6 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+
 #include "../../platforms.h"
 
 #ifdef HAL_STM32
@@ -36,16 +37,6 @@ LCD_CONTROLLER_TypeDef *TFT_FSMC::LCD;
 
 void TFT_FSMC::Init() {
   uint32_t controllerAddress;
-
-  #if PIN_EXISTS(TFT_RESET)
-    OUT_WRITE(TFT_RESET_PIN, HIGH);
-    HAL_Delay(100);
-  #endif
-
-  #if PIN_EXISTS(TFT_BACKLIGHT)
-    OUT_WRITE(TFT_BACKLIGHT_PIN, HIGH);
-  #endif
-
   FSMC_NORSRAM_TimingTypeDef Timing, ExtTiming;
 
   uint32_t NSBank = (uint32_t)pinmap_peripheral(digitalPinToPinName(TFT_CS_PIN), PinMap_FSMC_CS);
@@ -156,7 +147,7 @@ uint32_t TFT_FSMC::ReadID(tft_data_t Reg) {
 }
 
 bool TFT_FSMC::isBusy() {
-  #if defined(STM32F1xx)
+  #ifdef STM32F1xx
     volatile bool dmaEnabled = (DMAtx.Instance->CCR & DMA_CCR_EN) != RESET;
   #elif defined(STM32F4xx)
     volatile bool dmaEnabled = DMAtx.Instance->CR & DMA_SxCR_EN;
