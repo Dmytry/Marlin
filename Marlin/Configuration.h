@@ -66,6 +66,8 @@
 // Choose the name from boards.h that matches your setup
 #define MOTHERBOARD BOARD_BTT_SKR_MINI_E3_V2_0
 
+#define LCD_SCREEN_ROTATE 180
+
 /**
  * *** VENDORS PLEASE READ ***
  *
@@ -1506,20 +1508,14 @@
 // TODO: fix for new magnetic probe deployment
 #if ENABLED(Z_PROBE_SIDE_PUSHER)
   // X position at which the side rack is not engaged
-  #define Z_PROBE_SIDE_PUSHER_SAFE_X 10.0+X_MIN_POS
-
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 336.0+X_MIN_POS
-  #define Z_PROBE_SIDE_PUSHER_STOW_X 0.0+X_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_SAFE_X 320.0+X_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 340.0+X_MIN_POS 
+   
 
   // Z positions for the deploying movement
   #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 8
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_MID 0
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 8
-  // Z positions for the stowing movement
-  #define Z_PROBE_SIDE_PUSHER_STOW_Z_START 8
-  #define Z_PROBE_SIDE_PUSHER_STOW_Z_END Z_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 25
 
-  #define Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL 8
 
   // Feedrates for the movements
   #define Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE XY_PROBE_FEEDRATE
@@ -1562,7 +1558,8 @@
 
 // Old printhead
 //#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -1.15 }
-#define NOZZLE_TO_PROBE_OFFSET { 30.0, 3.0, -0.71 }
+// New simplified unclicky
+#define NOZZLE_TO_PROBE_OFFSET { 30.0, 12.5, -8.2 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1573,7 +1570,8 @@
 #define XY_PROBE_FEEDRATE 24000
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST (16*60)
+#define Z_PROBE_FEEDRATE_FAST (5*60)
+//#define Z_PROBE_FEEDRATE_FAST (2*60)
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
@@ -1769,7 +1767,7 @@
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS -10
 #define Y_MIN_POS 0
-#define Z_MIN_POS 0//-14.3
+#define Z_MIN_POS -0.75//0//-14.3
 #define X_MAX_POS X_BED_SIZE+1
 #define Y_MAX_POS Y_BED_SIZE+1
 #define Z_MAX_POS 383
@@ -1960,10 +1958,10 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define PROBING_MARGIN_LEFT 15
-  #define PROBING_MARGIN_RIGHT 10
-  #define PROBING_MARGIN_FRONT 10
-  #define PROBING_MARGIN_BACK 10
+  #define PROBING_MARGIN_LEFT 20
+  #define PROBING_MARGIN_RIGHT 20
+  #define PROBING_MARGIN_FRONT 20
+  #define PROBING_MARGIN_BACK 20
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define PROBING_MARGIN 50
