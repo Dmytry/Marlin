@@ -307,7 +307,7 @@ public:
     static void refresh_largest_sensorless_adj();
   #endif
 
-private:
+//private:
   static bool probe_down_to_z(const_float_t z, const_feedRate_t fr_mm_s);
   static void do_z_raise(const float z_raise);
   static float run_z_probe(const bool sanity_check=true);

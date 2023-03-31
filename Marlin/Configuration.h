@@ -1193,7 +1193,8 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 424.9 }// old extruder: 97.70 
+ // Raised microsteps to 64 for z
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, 424.9 }// old extruder: 97.70 
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
@@ -1213,11 +1214,11 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 600, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 3000, 1500, 600, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
-  #define MAX_ACCEL_EDIT_VALUES       { 6000, 6000, 200, 20000 } // ...or, set your own edit limits
+  #define MAX_ACCEL_EDIT_VALUES       { 10000, 10000, 200, 20000 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -1343,6 +1344,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
+// TODO: mount and deploy stow sequence
 //#define FIX_MOUNTED_PROBE
 
 /**
@@ -1504,17 +1506,19 @@
 
 #endif
 
+// TODO: reenable when dock made
 #define Z_PROBE_SIDE_PUSHER
+
 // TODO: fix for new magnetic probe deployment
 #if ENABLED(Z_PROBE_SIDE_PUSHER)
   // X position at which the side rack is not engaged
   #define Z_PROBE_SIDE_PUSHER_SAFE_X 320.0+X_MIN_POS
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 340.0+X_MIN_POS 
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 333.5+X_MIN_POS 
    
 
   // Z positions for the deploying movement
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 8
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 25
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 4.5
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 20
 
 
   // Feedrates for the movements
@@ -1522,6 +1526,7 @@
 
   #define Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE XY_PROBE_FEEDRATE/10
   #define Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE XY_PROBE_FEEDRATE/10
+  #define Z_PROBE_SIDE_PUSHER_STOW_SWIPE_FEEDRATE XY_PROBE_FEEDRATE/20
   // Speed of disengaging from the rack
   // May have to be slower to avoid shaking the probe open
 
@@ -1559,7 +1564,9 @@
 // Old printhead
 //#define NOZZLE_TO_PROBE_OFFSET { -43.0, 0.0, -1.15 }
 // New simplified unclicky
-#define NOZZLE_TO_PROBE_OFFSET { 30.0, 12.5, -8.2 }
+//#define NOZZLE_TO_PROBE_OFFSET { 30.0, 12.5, -7.62 }
+// New kinematic probe
+#define NOZZLE_TO_PROBE_OFFSET { 40.0, 0, -5.27 }// 0.827
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1570,8 +1577,9 @@
 #define XY_PROBE_FEEDRATE 24000
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST (5*60)
-//#define Z_PROBE_FEEDRATE_FAST (2*60)
+//#define Z_PROBE_FEEDRATE_FAST (16*60)
+
+#define Z_PROBE_FEEDRATE_FAST (4*60)
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
@@ -1642,8 +1650,8 @@
 //#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
 //#define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
 
-#define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
+#define Z_CLEARANCE_BETWEEN_PROBES  1 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     1 // Z Clearance between multiple probes
 
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
@@ -1954,7 +1962,8 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 4
+  //#define GRID_MAX_POINTS_X 4
+  #define GRID_MAX_POINTS_X 7
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
