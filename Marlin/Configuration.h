@@ -1513,12 +1513,12 @@
 #if ENABLED(Z_PROBE_SIDE_PUSHER)
   // X position at which the side rack is not engaged
   #define Z_PROBE_SIDE_PUSHER_SAFE_X 320.0+X_MIN_POS
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 333.5+X_MIN_POS 
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 331+X_MIN_POS 
    
 
   // Z positions for the deploying movement
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 4.5
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 20
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 3
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 18
 
 
   // Feedrates for the movements
@@ -1566,7 +1566,7 @@
 // New simplified unclicky
 //#define NOZZLE_TO_PROBE_OFFSET { 30.0, 12.5, -7.62 }
 // New kinematic probe
-#define NOZZLE_TO_PROBE_OFFSET { 40.0, 0, -5.27 }// 0.827
+#define NOZZLE_TO_PROBE_OFFSET { 40.0, 0, -2.22 }// 0.827
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.

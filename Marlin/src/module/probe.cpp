@@ -294,7 +294,8 @@ xyz_pos_t Probe::offset; // Initialized by settings.load()
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
     */
-    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, current_position.z, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));    
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
@@ -330,6 +331,8 @@ xyz_pos_t Probe::offset; // Initialized by settings.load()
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
     do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_SWIPE_FEEDRATE));
+
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, 4, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
   }
 /*
   inline void run_deploy_moves_script() {    
@@ -989,7 +992,9 @@ float Probe::probe_at_point(const_float_t rx, const_float_t ry, const ProbePtRai
       SERIAL_ERROR_MSG(STR_ERR_PROBING_FAILED);
     #endif
   }
-  DEBUG_ECHOLNPGM("measured_z: ", measured_z);
+  //DEBUG_ECHOLNPGM("measured_z: ", measured_z);
+  DEBUG_ECHOLNPAIR_F("measured_z: ", measured_z, 4);
+  //SERIAL_ECHOPAIR_F("measured_z: ", measured_z, 4);
   return measured_z;
 }
 
