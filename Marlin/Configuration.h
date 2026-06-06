@@ -66,6 +66,7 @@
 
 // Choose the name from boards.h that matches your setup
 #define MOTHERBOARD BOARD_BTT_SKR_MINI_E3_V2_0
+// Note: the MCU on that board is STM32F103RCT6
 
 #define LCD_SCREEN_ROTATE 180
 
