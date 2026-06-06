@@ -23,8 +23,9 @@
 /**
  * module/probe.cpp
  */
-
+// fix dependency compilation
 #include "../inc/MarlinConfig.h"
+#include "Configuration.h"
 
 #if HAS_BED_PROBE
 
@@ -269,18 +270,18 @@ xyz_pos_t Probe::offset; // Initialized by settings.load
 #elif ENABLED(Z_PROBE_SIDE_RACK)
 
   inline void run_deploy_moves_script() {
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_DISENGAGE_X, motion.position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_ENGAGE_X,    motion.position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_ENGAGE_X,    motion.position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_DISENGAGE_X, motion.position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
   }
 
   inline void run_stow_moves_script() {
     endstops.enable_z_probe(false);
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_STOW_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_DISENGAGE_X, motion.position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_ENGAGE_X,    motion.position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_ENGAGE_X,    motion.position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_STOW_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_RACK_DISENGAGE_X, motion.position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
   }
 
 #elif ENABLED(Z_PROBE_SIDE_PUSHER)
@@ -288,26 +289,26 @@ xyz_pos_t Probe::offset; // Initialized by settings.load
   inline void run_deploy_moves_script() {    
     // Old, works fine but not very repeatable
     /*
-    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    motion.blocking_move(motion.position.x, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_SAFE_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
     */
 
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, current_position.z, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));    
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_SAFE_X, motion.position.y, motion.position.z, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));    
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_SAFE_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_SAFE_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
     // Shouldn't be needed for kinematic probe
 /*
-    float p=current_position.y;
+    float p=motion.position.y;
     if(p<10)p=10;
     if(p>290)p=290;    
 
-    do_blocking_move_to(250, p, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(250, p, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
 
-    do_blocking_move_to(250, p, 4, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    motion.blocking_move(250, p, 4, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
 
     auto saved=endstops.z_probe_enabled;
 
@@ -320,33 +321,33 @@ xyz_pos_t Probe::offset; // Initialized by settings.load
 
     endstops.enable_z_probe(saved);
     
-    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(motion.position.x, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
     */
   }
 
   inline void run_stow_moves_script() {
     endstops.enable_z_probe(false);
-    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_SWIPE_FEEDRATE));
+    motion.blocking_move(motion.position.x, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_SAFE_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_SWIPE_FEEDRATE));
 
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, 4, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_SAFE_X, motion.position.y, 4, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
   }
 /*
   inline void run_deploy_moves_script() {    
-    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_MID, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));    
+    motion.blocking_move(motion.position.x, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_MID, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_DEPLOY_X, motion.position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));    
   }
 
   inline void run_stow_moves_script() {
     endstops.enable_z_probe(false);
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
-    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_SAFE_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
+    motion.blocking_move(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
   }
 */
 #elif ENABLED(MAG_MOUNTED_PROBE)
@@ -528,7 +529,7 @@ FORCE_INLINE void probe_specific_action(const bool deploy) {
 
   #elif ANY(TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, MAG_MOUNTED_PROBE, Z_PROBE_SIDE_RACK, Z_PROBE_SIDE_PUSHER)
 
-    deploy ? run_deploy_moves() : run_stow_moves();
+    deploy ? run_deploy_moves_script() : run_stow_moves_script();
 
   #elif ENABLED(RACK_AND_PINION_PROBE)
 
@@ -865,7 +866,7 @@ float Probe::run_z_probe(const bool sanity_check/*=true*/, const float z_min_poi
   const float zoffs = SUM_TERN(HAS_HOTEND_OFFSET, -offset.z, motion.active_hotend_offset().z);
 
   auto try_to_probe = [&](PGM_P const plbl, const float z_probe_low_point, const feedRate_t fr_mm_s, const bool scheck) -> bool {
-    constexpr float error_tolerance = Z_PROBE_ERROR_TOLERANCE;
+    constexpr float error_tolerance = 1.0f;//DmytryTODO: use a define
     if (DEBUGGING(LEVELING)) {
       DEBUG_ECHOPGM_P(plbl);
       DEBUG_ECHOLNPGM("> try_to_probe(..., ", z_probe_low_point, ", ", fr_mm_s, ", ...)");
@@ -1194,7 +1195,7 @@ float Probe::probe_at_point(
   // Restore the Z homing current
   TERN_(PROBING_USE_CURRENT_HOME, motion.restore_homing_current(Z_AXIS));
 
-  DEBUG_ECHOLNPAIR_F("measured_z: ", measured_z, 4);
+  //DEBUG_ECHOLNPAIR_F("measured_z: ", measured_z, 4);
   return measured_z;
 }
 
