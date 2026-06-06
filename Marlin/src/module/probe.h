@@ -369,7 +369,7 @@ public:
     static void refresh_largest_sensorless_adj();
   #endif
 
-private:
+//private:
   #if HAS_BED_PROBE
     static bool probe_down_to_z(const float z, const feedRate_t fr_mm_s);
     static float run_z_probe(const bool sanity_check=true, const float z_min_point=Z_PROBE_LOW_POINT, const float z_clearance=Z_TWEEN_SAFE_CLEARANCE);

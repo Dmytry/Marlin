@@ -266,7 +266,89 @@ xyz_pos_t Probe::offset; // Initialized by settings.load
       motion.blocking_move(stow_5, MMM_TO_MMS(Z_PROBE_ALLEN_KEY_STOW_5_FEEDRATE));
     #endif
   }
+#elif ENABLED(Z_PROBE_SIDE_RACK)
 
+  inline void run_deploy_moves_script() {
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y, Z_PROBE_SIDE_RACK_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DEPLOY_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
+  }
+
+  inline void run_stow_moves_script() {
+    endstops.enable_z_probe(false);
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y, Z_PROBE_SIDE_RACK_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_RACK_ENGAGE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_ENGAGE_X,    current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_STOW_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_RACK_DISENGAGE_X, current_position.y,   Z_PROBE_SIDE_RACK_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_RACK_DISENGAGE_FEEDRATE));
+  }
+
+#elif ENABLED(Z_PROBE_SIDE_PUSHER)
+
+  inline void run_deploy_moves_script() {    
+    // Old, works fine but not very repeatable
+    /*
+    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    */
+
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, current_position.z, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));    
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+    // Shouldn't be needed for kinematic probe
+/*
+    float p=current_position.y;
+    if(p<10)p=10;
+    if(p>290)p=290;    
+
+    do_blocking_move_to(250, p, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+
+    do_blocking_move_to(250, p, 4, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));
+
+    auto saved=endstops.z_probe_enabled;
+
+    endstops.enable_z_probe(true);
+
+    for(int i=0;i<5;++i){
+      probe.run_z_probe(false);
+      probe.do_z_raise(1);
+    }
+
+    endstops.enable_z_probe(saved);
+    
+    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    */
+  }
+
+  inline void run_stow_moves_script() {
+    endstops.enable_z_probe(false);
+    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_SWIPE_FEEDRATE));
+
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, current_position.y, 4, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+  }
+/*
+  inline void run_deploy_moves_script() {    
+    do_blocking_move_to(current_position.x, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_MID, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_DEPLOY_X, current_position.y, Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE));    
+  }
+
+  inline void run_stow_moves_script() {
+    endstops.enable_z_probe(false);
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_SAFE_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_START, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_END, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
+    do_blocking_move_to(Z_PROBE_SIDE_PUSHER_STOW_X, Y_MIN_POS, Z_PROBE_SIDE_PUSHER_STOW_Z_FINAL, MMM_TO_MMS(Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE));
+  }
+*/
 #elif ENABLED(MAG_MOUNTED_PROBE)
 
   typedef struct { float fr_mm_min; xyz_pos_t where; } mag_probe_move_t;
@@ -444,7 +526,7 @@ FORCE_INLINE void probe_specific_action(const bool deploy) {
 
     if (TERN0(Z_SERVO_DEACTIVATE_AFTER_STOW, !deploy)) servo[Z_PROBE_SERVO_NR].detach();
 
-  #elif ANY(TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, MAG_MOUNTED_PROBE)
+  #elif ANY(TOUCH_MI_PROBE, Z_PROBE_ALLEN_KEY, MAG_MOUNTED_PROBE, Z_PROBE_SIDE_RACK, Z_PROBE_SIDE_PUSHER)
 
     deploy ? run_deploy_moves() : run_stow_moves();
 
@@ -557,7 +639,7 @@ bool Probe::set_deployed(const bool deploy, const bool no_return/*=false*/) {
     motion.do_z_clearance(zdest);
   }
 
-  #if ANY(Z_PROBE_SLED, Z_PROBE_ALLEN_KEY)
+  #if ANY(Z_PROBE_SLED, Z_PROBE_ALLEN_KEY, Z_PROBE_SIDE_RACK, Z_PROBE_SIDE_PUSHER)
     if (motion.homing_needed_error(TERN_(Z_PROBE_SLED, _BV(X_AXIS)))) {
       probe_error_stop();
       return true;
@@ -1112,6 +1194,7 @@ float Probe::probe_at_point(
   // Restore the Z homing current
   TERN_(PROBING_USE_CURRENT_HOME, motion.restore_homing_current(Z_AXIS));
 
+  DEBUG_ECHOLNPAIR_F("measured_z: ", measured_z, 4);
   return measured_z;
 }
 

@@ -458,6 +458,7 @@
 
         if (--segments == 0) raw = motion.destination;  // If this is last segment, use destination for exact
 
+        // DmytryTODO: compensate for average bed height
         const float z_cxcy = (z_cxy0 + z_cxym * cell.y) // interpolated mesh z height along cell.x at cell.y
           TERN_(ENABLE_LEVELING_FADE_HEIGHT, * fade_scaling_factor); // apply fade factor to interpolated height
 

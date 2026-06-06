@@ -67,8 +67,8 @@ void GcodeSuite::M48() {
   }
 
   const int8_t n_samples = parser.byteval('P', 10);
-  if (!WITHIN(n_samples, 4, 50)) {
-    SERIAL_ECHOLNPGM(GCODE_ERR_MSG("Sample size not plausible (4-50)."));
+  if (!WITHIN(n_samples, 4, 5000)) {
+    SERIAL_ECHOLNPGM("?Sample size not plausible (4-50).");
     return;
   }
 

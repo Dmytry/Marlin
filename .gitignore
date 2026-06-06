@@ -178,3 +178,9 @@ tags
 .aider*
 !.aiderignore
 .env
+# Simulation / Native
+eeprom.dat
+imgui.ini
+
+# Old crap
+old_stuff
