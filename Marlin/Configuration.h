@@ -127,7 +127,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Theseus21"
+#define CUSTOM_MACHINE_NAME "Theseus26"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -1731,30 +1731,23 @@
 
 #endif
 
-// TODO: reenable when dock made
 #define Z_PROBE_SIDE_PUSHER
 
-// TODO: fix for new magnetic probe deployment
 #if ENABLED(Z_PROBE_SIDE_PUSHER)
   // X position at which the side rack is not engaged
-  #define Z_PROBE_SIDE_PUSHER_SAFE_X 320.0+X_MIN_POS
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X 331+X_MIN_POS 
-   
+  #define Z_PROBE_SIDE_PUSHER_SAFE_X 321.0+X_MIN_POS
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_X Z_PROBE_SIDE_PUSHER_SAFE_X+11.0
 
   // Z positions for the deploying movement
   #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_START 3
   #define Z_PROBE_SIDE_PUSHER_DEPLOY_Z_END 18
 
-
   // Feedrates for the movements
-  #define Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE XY_PROBE_FEEDRATE
+  #define Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE_X XY_PROBE_FEEDRATE
+  #define Z_PROBE_SIDE_PUSHER_MOVE_FEEDRATE_Z XY_PROBE_FEEDRATE/10
 
-  #define Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE XY_PROBE_FEEDRATE/10
-  #define Z_PROBE_SIDE_PUSHER_STOW_FEEDRATE XY_PROBE_FEEDRATE/10
-  #define Z_PROBE_SIDE_PUSHER_STOW_SWIPE_FEEDRATE XY_PROBE_FEEDRATE/20
-  // Speed of disengaging from the rack
-  // May have to be slower to avoid shaking the probe open
-
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE_X XY_PROBE_FEEDRATE/50
+  #define Z_PROBE_SIDE_PUSHER_DEPLOY_FEEDRATE_Z XY_PROBE_FEEDRATE/50
 #endif
 
 /**
@@ -1805,7 +1798,7 @@
 
 // X and Y axis travel speed (mm/min) between probes
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_FEEDRATE 24000
+#define XY_PROBE_FEEDRATE (400*60)
 
 // Feedrate for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_FEEDRATE_FAST  (4*60) // (mm/min)
@@ -1876,7 +1869,7 @@
  * Example: 'M851 Z-5' with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: 'M851 Z+1' with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE   8 // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_DEPLOY_PROBE   3 // Z Clearance for Deploy/Stow
 //#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
 //#define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
 
