@@ -670,11 +670,20 @@ bool Probe::set_deployed(const bool deploy, const bool no_return/*=false*/) {
   #if ENABLED(PROBE_TRIGGERED_WHEN_STOWED_TEST)
 
     // Only deploy/stow if needed
-    if (PROBE_TRIGGERED() == deploy || !deploy) {
+    if (
+        // Z_PROBE_SIDE_PUSHER can crash if a deploy or stow is attempted while already deployed / stowed
+        ((!deploy)&&(!ENABLED(Z_PROBE_SIDE_PUSHER))) ||
+        PROBE_TRIGGERED() == deploy) {
       if (!deploy) endstops.enable_z_probe(false); // Switch off triggered when stowed probes early
                                                    // otherwise an Allen-Key probe can't be stowed.
       probe_specific_action(deploy);
     }
+    #if PROBE_DEPLOY_RETRY_COUNT>0
+    for(int i=0; i<PROBE_DEPLOY_RETRY_COUNT && (PROBE_TRIGGERED() == deploy); ++i){
+      probe_specific_action(!deploy);
+      probe_specific_action(deploy);
+    }
+    #endif
 
     if (PROBE_TRIGGERED() == deploy) {             // Unchanged after deploy/stow action?
       if (marlin.isRunning()) {

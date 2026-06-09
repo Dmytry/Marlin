@@ -1611,6 +1611,10 @@
 
 // #define NO_PROBE_IS_TRIGGERED_WHEN_STOWED_TEST
 
+#if !ENABLED(NO_PROBE_IS_TRIGGERED_WHEN_STOWED_TEST)
+// Retry probe deployment
+#define PROBE_DEPLOY_RETRY_COUNT 5
+#endif
 
 
 /**
