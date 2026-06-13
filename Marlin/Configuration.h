@@ -1806,10 +1806,10 @@
 #define XY_PROBE_FEEDRATE (400*60)
 
 // Feedrate for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST  (4*60) // (mm/min)
+#define Z_PROBE_FEEDRATE_FAST  (40*60) // (mm/min)
 
 // Feedrate for the "accurate" probe of each point
-#define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2) // (mm/min)
+#define Z_PROBE_FEEDRATE_SLOW (4*60) // (mm/min)
 
 /**
  * Probe Activation Switch
@@ -1878,8 +1878,8 @@
 //#define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
 //#define Z_CLEARANCE_MULTI_PROBE     3 // Z Clearance between multiple probes
 
-#define Z_CLEARANCE_BETWEEN_PROBES  1 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     1 // Z Clearance between multiple probes
+#define Z_CLEARANCE_BETWEEN_PROBES  1.5 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     1.5 // Z Clearance between multiple probes
 
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
