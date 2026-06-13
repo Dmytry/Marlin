@@ -1795,7 +1795,7 @@
  *     |           |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 40.0, 0, -2.55 }// 0.827
+#define NOZZLE_TO_PROBE_OFFSET { 40.0, 0, -0.88 }// 0.827
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1883,7 +1883,7 @@
 
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
-#define Z_PROBE_LOW_POINT          -3 // Farthest distance below the trigger-point to go before stopping
+#define Z_PROBE_LOW_POINT          -4 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 provide ranges for adjusting the X, Y, and Z probe offsets
 //#define PROBE_OFFSET_XMIN -50   // (mm)
@@ -2037,10 +2037,10 @@
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS -10
 #define Y_MIN_POS 0
-#define Z_MIN_POS -0.75//0//-14.3
+#define Z_MIN_POS -2.0//0//-14.3
 #define X_MAX_POS X_BED_SIZE+1
 #define Y_MAX_POS Y_BED_SIZE+1
-#define Z_MAX_POS 346
+#define Z_MAX_POS 336
 
 /**
  * Software Endstops
